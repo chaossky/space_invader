@@ -140,22 +140,22 @@ addEventListener('keydown',({key})=>{
 addEventListener('keyup',({key})=>{
     switch(key){
         case 'a':
-            console.log('left');
+          // console.log('left');
             keys.a.pressed=false;
             player.velocity.x=-1;
             break;
         case 'd':
-            console.log('right');
+          //  console.log('right');
             keys.d.pressed=false;
             player.velocity.x=1;
             break;
         case 'w':
-            console.log('up');
+          //  console.log('up');
             keys.w.pressed=false;
             player.velocity.y=-1;
             break;
         case 's':
-            console.log('down');
+          //  console.log('down');
             keys.s.pressed=false;
             player.velocity.y=1;
             break;
