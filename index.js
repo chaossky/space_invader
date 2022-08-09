@@ -31,8 +31,7 @@ class Player{
     }
 
     //플레이어 그리기 메소드
-    draw(){     
-       
+    draw(){            
          c.drawImage //이미지 그리기
             (
                     this.image,//이미지
@@ -55,7 +54,35 @@ class Player{
     }
 }
 
+//프로젝타일 클래스(미사일 )만들기
+class Projectile{
+    //생성자    
+    constructor({position,velocity}){
+        this.position=position;
+        this.velocity=velocity;
+
+        this.radius=3
+
+    }
+//그리기 메소드
+    draw(){
+        c.beginPath();
+        c.arc(this.position.x,this.position.y,this.radius,0,Math.PI*2,false);
+        c.fillStyle='red';
+        c.fill();
+        c.closePath();
+    }
+//업데이트 메소드
+    update(){
+        this.draw();
+        this.position.x+=this.velocity.x;
+        this.position.y+=this.velocity.y;
+    }
+}
+
+
 const player=new Player();//새 플레이어를 인스턴스 생성
+const projectiles=[];
 //입력되는 키값이 눌렸는지를 확인하는 변수 목록
 const keys={
     a:{
@@ -81,6 +108,21 @@ function animate(){
     c.fillStyle='black'; //바탕색 설정
     c.fillRect(0,0,canvas.width,canvas.height);//캔버스를 채움
     player.update();//플레이어 업데이트
+    projectiles.forEach((projectile,index)=>
+    {
+        if(projectile.position.y+projectile.radius<=0)
+
+        {
+            setTimeout(()=>{
+                projectiles.splice(index,1);
+            },0);
+        }
+        else{
+            projectile.update();
+        }
+    })
+    
+
 
     //키보드 입력 처리
 
@@ -109,27 +151,38 @@ animate();
 addEventListener('keydown',({key})=>{
     switch(key){
         case 'a':
-            console.log('left');
+         //   console.log('left');
             keys.a.pressed=true;
             player.velocity.x=-1;
             break;
         case 'd':
-            console.log('right');
+         //   console.log('right');
             keys.d.pressed=true;
             player.velocity.x=1;
             break;
         case 'w':
-            console.log('up');
+          //  console.log('up');
             keys.w.pressed=true;
             player.velocity.y=-1;
             break;
         case 's':
-            console.log('down');
+          //  console.log('down');
             keys.s.pressed=true ;
             player.velocity.y=1;
             break;
         case ' ':
-            console.log('space');
+          //  console.log('space');
+          projectiles.push(new Projectile({
+            position:{
+                x:player.position.x+player.width/2,
+                y:player.position.y
+            },
+            velocity:{
+                x:0,
+                y:-5
+            }
+        }));
+             
             //player.velocity.y=-10;
             break;
     }
